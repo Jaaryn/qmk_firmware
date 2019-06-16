@@ -16,31 +16,7 @@
 
 #include QMK_KEYBOARD_H
 #include "muse.h"
-
-enum preonic_layers {
-  _QWERTY,
-  _COLEMAK,
-  _DVORAK,
-  _PLOVER,
-  _LOWER,
-  _RAISE,
-  _ADJUST
-};
-
-enum preonic_keycodes {
-  QWERTY = SAFE_RANGE,
-  COLEMAK,
-  DVORAK,
-  PLOVER,
-  LOWER,
-  RAISE,
-  EXT_PLV
-};
-
-#define WIN_LEFT RCTL(RGUI(KC_LEFT))
-#define WIN_RGHT RCTL(RGUI(KC_RGHT))
-#define WIN_CLS RCTL(RGUI(KC_F4))
-#define WIN_NEW RCTL(RGUI(KC_D))
+#include "jaaryn.h"
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -126,7 +102,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     XXXXXXX, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, \
     XXXXXXX, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, \
     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
-    EXT_PLV, XXXXXXX, XXXXXXX, KC_C,    KC_V,    XXXXXXX, XXXXXXX, KC_N,    KC_M,    XXXXXXX, XXXXXXX, XXXXXXX  \
+    KC_XPLV, XXXXXXX, XXXXXXX, KC_C,    KC_V,    XXXXXXX, XXXXXXX, KC_N,    KC_M,    XXXXXXX, XXXXXXX, XXXXXXX  \
 ),
 
 /* Lower
@@ -147,7 +123,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, KC_TILD, KC_PIPE,  KC_DQT, KC_QUOT, _______, _______, KC_LCBR, KC_RCBR, KC_LBRC, KC_RBRC, _______, \
   _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, _______, \
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_BSLS, _______, \
-  _______, _______, _______, _______, _______, _______, _______, _______, WIN_LEFT, WIN_CLS, WIN_NEW, WIN_RGHT  \
+  _______, _______, _______, _______, _______, _______, _______, _______, WIN_LFT, WIN_CLS, WIN_NEW, WIN_RHT  \
 ),
 
 /* Raise
@@ -195,68 +171,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-        case QWERTY:
-          if (record->event.pressed) {
-            set_single_persistent_default_layer(_QWERTY);
-          }
-          return false;
-          break;
-        case COLEMAK:
-          if (record->event.pressed) {
-            set_single_persistent_default_layer(_COLEMAK);
-          }
-          return false;
-          break;
-        case DVORAK:
-          if (record->event.pressed) {
-            set_single_persistent_default_layer(_DVORAK);
-          }
-          return false;
-          break;
-        case LOWER:
-          if (record->event.pressed) {
-            layer_on(_LOWER);
-            update_tri_layer(_LOWER, _RAISE, _ADJUST);
-          } else {
-            layer_off(_LOWER);
-            update_tri_layer(_LOWER, _RAISE, _ADJUST);
-          }
-          return false;
-          break;
-        case RAISE:
-          if (record->event.pressed) {
-            layer_on(_RAISE);
-            update_tri_layer(_LOWER, _RAISE, _ADJUST);
-          } else {
-            layer_off(_RAISE);
-            update_tri_layer(_LOWER, _RAISE, _ADJUST);
-          }
-          return false;
-          break;
-        case PLOVER:
-          if (record->event.pressed) {
-            layer_off(_RAISE);
-            layer_off(_LOWER);
-            layer_off(_ADJUST);
-            layer_on(_PLOVER);
-            if (!eeconfig_is_enabled()) {
-                eeconfig_init();
-            }
-            keymap_config.raw = eeconfig_read_keymap();
-            keymap_config.nkro = 1;
-            eeconfig_update_keymap(keymap_config.raw);
-          }
-          return false;
-          break;
-        case EXT_PLV:
-          if (record->event.pressed) {
-            layer_off(_PLOVER);
-          }
-          return false;
-          break;
-      }
+bool process_record_keymap(uint16_t keycode, keyrecord_t *record) {
     return true;
 };
 
@@ -266,54 +181,8 @@ uint16_t muse_counter = 0;
 uint8_t muse_offset = 70;
 uint16_t muse_tempo = 50;
 
-void encoder_update(bool clockwise) {
-  if (muse_mode) {
-    if (IS_LAYER_ON(_RAISE)) {
-      if (clockwise) {
-        muse_offset++;
-      } else {
-        muse_offset--;
-      }
-    } else {
-      if (clockwise) {
-        muse_tempo+=1;
-      } else {
-        muse_tempo-=1;
-      }
-    }
-  } else {
-    if (clockwise) {
-      register_code(KC_PGDN);
-      unregister_code(KC_PGDN);
-    } else {
-      register_code(KC_PGUP);
-      unregister_code(KC_PGUP);
-    }
-  }
-}
 
-void dip_update(uint8_t index, bool active) {
-  switch (index) {
-    case 0:
-      if (active) {
-        layer_on(_ADJUST);
-      } else {
-        layer_off(_ADJUST);
-      }
-      break;
-    case 1:
-      if (active) {
-        muse_mode = true;
-      } else {
-        muse_mode = false;
-        #ifdef AUDIO_ENABLE
-          stop_all_notes();
-        #endif
-      }
-   }
-}
-
-void matrix_scan_user(void) {
+void matrix_scan_keymap(void) {
   #ifdef AUDIO_ENABLE
     if (muse_mode) {
       if (muse_counter == 0) {
