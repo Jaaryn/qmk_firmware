@@ -38,18 +38,20 @@ enum userspace_layers {
 };
 
 enum userspace_custom_keycodes {
-    VRSN = PLACEHOLDER_SAFE_RANGE,              // Prints QMK Firmware and board info
+    VRSN = PLACEHOLDER_SAFE_RANGE,   // Prints QMK Firmware and board info
     QWERTY,         // Sets default layer to QWERTY
     COLEMAK,        // Sets default layer to COLEMAK
     DVORAK,         // Sets default layer to DVORAK
     PLOVER,         // Sets default layer to PLOVER
-    KC_XPLV,           // Exits PLOVER
-    NEW_SAFE_RANGE     //use "NEWPLACEHOLDER for keymap specific codes
+    KC_XPLV,        // Exits PLOVER
+    KC_CCCV,        // Hold to copy, tap to paste 
+    NEW_SAFE_RANGE  //use "NEWPLACEHOLDER for keymap specific codes
 };
 
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
 
+bool process_record_keymap(uint16_t keycode, keyrecord_t *record);
 
 // Define short macros
 #define UNDO    LCTL(KC_Z)

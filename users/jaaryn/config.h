@@ -1,14 +1,5 @@
 #pragma once
 
-/* #ifdef AUDIO_ENABLE
-#   define DEFAULT_LAYER_SONGS { SONG(QWERTY_SOUND), \
-                                    SONG(COLEMAK_SOUND), \
-                                    SONG(DVORAK_SOUND), \
-                                    SONG(OVERWATCH_THEME) \
-                                }
-
-#endif // !AUDIO_ENABLE */
-
 #ifndef QMK_KEYS_PER_SCAN
 #   define QMK_KEYS_PER_SCAN 4
 #endif // !QMK_KEYS_PER_SCAN
@@ -22,6 +13,20 @@
 
 
 #define FORCE_NKRO
+
+
+#ifdef TAPPING_TERM
+#   undef TAPPING_TERM
+#endif // TAPPING_TERM
+#if defined(KEYBOARD_ergodox_ez)
+#   define TAPPING_TERM 185
+#elif defined(KEYBOARD_crkbd)
+#   define TAPPING_TERM 200
+#else
+#   define TAPPING_TERM 175
+#endif
+
+#define TAP_CODE_DELAY 5
 
 /* Disable unused and unneeded features to reduce on firmware size */
 #ifdef LOCKING_SUPPORT_ENABLE
