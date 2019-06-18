@@ -34,6 +34,7 @@ enum userspace_layers {
     _LOWER,
     _RAISE,
     _ADJUST,
+    _FUNC,
     _NAV
 };
 
@@ -45,6 +46,8 @@ enum userspace_custom_keycodes {
     PLOVER,         // Sets default layer to PLOVER
     KC_XPLV,        // Exits PLOVER
     KC_CCCV,        // Hold to copy, tap to paste 
+    PING,
+    RGB_SLD,
     NEW_SAFE_RANGE  //use "NEWPLACEHOLDER for keymap specific codes
 };
 
@@ -63,6 +66,9 @@ bool process_record_keymap(uint16_t keycode, keyrecord_t *record);
 #define WIN_RHT RCTL(RGUI(KC_RGHT))
 #define WIN_CLS RCTL(RGUI(KC_F4))
 #define WIN_NEW RCTL(RGUI(KC_D))
+#define KC_CAD   LCA(KC_DEL)
+#define KC_ALTB  LALT(KC_TAB)
+#define KC_CTLES CTL_T(KC_ESC)
 
 // Rename mouse keys with 7 letters
 #ifdef MOUSEKEY_ENABLE
