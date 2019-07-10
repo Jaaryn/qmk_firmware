@@ -44,15 +44,16 @@ enum userspace_custom_keycodes {
     COLEMAK,        // Sets default layer to COLEMAK
     DVORAK,         // Sets default layer to DVORAK
     PLOVER,         // Sets default layer to PLOVER
+    LOWER,
+    RAISE,
+    FUNC,
+    NAV,
     KC_XPLV,        // Exits PLOVER
     KC_CCCV,        // Hold to copy, tap to paste 
     PING,
     RGB_SLD,
     NEW_SAFE_RANGE  //use "NEWPLACEHOLDER for keymap specific codes
 };
-
-#define LOWER MO(_LOWER)
-#define RAISE MO(_RAISE)
 
 bool process_record_keymap(uint16_t keycode, keyrecord_t *record);
 
@@ -69,6 +70,8 @@ bool process_record_keymap(uint16_t keycode, keyrecord_t *record);
 #define KC_CAD   LCA(KC_DEL)
 #define KC_ALTB  LALT(KC_TAB)
 #define KC_CTLES CTL_T(KC_ESC)
+
+#define MG_NKRO MAGIC_TOGGLE_NKRO
 
 // Rename mouse keys with 7 letters
 #ifdef MOUSEKEY_ENABLE

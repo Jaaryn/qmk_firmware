@@ -26,17 +26,25 @@ uint16_t copy_paste_timer;
 
 
 __attribute__ ((weak))
+void matrix_init_keymap(void){}
+
+void matrix_init_user(void) {
+    matrix_init_keymap();
+}
+
+__attribute__ ((weak))
 void matrix_scan_keymap(void) {}
 
-// No global matrix scan code, so just run keymap's matrix
-// scan function
 void matrix_scan_user(void) {
-    static bool has_ran_yet;
-    if (!has_ran_yet) {
-        has_ran_yet = true;
-        startup_user();
-    }
     matrix_scan_keymap();
+}
+
+
+__attribute__ ((weak))
+void matrix_render_keymap(void) {}
+
+void matrix_render_user(void) {
+    matrix_render_keymap();
 }
 
 
@@ -51,30 +59,35 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 }
 
 
+__attribute__ ((weak))
+void suspend_power_down_keymap(void) {}
+
+void suspend_power_down_user(void) {
+    suspend_power_down_keymap();
+}
+
+__attribute__ ((weak))
+void suspend_wakeup_init_keymap(void) {}
+
+void suspend_wakeup_init_user(void) {
+    suspend_wakeup_init_keymap();
+}
+
 
 __attribute__ ((weak))
 bool process_record_keymap(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    #ifdef CONSOLE_ENABLE
+        uprintf("KL: kc: %u, col: %u, row: %u, pressed: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed);
+    #endif 
     switch (keycode) {
-        case QWERTY:
+        case QWERTY ... DVORAK:
             if (record->event.pressed) {
-                set_single_persistent_default_layer(_QWERTY);
+                set_single_persistent_default_layer(keycode - QWERTY);
             }
-            return false;
-            break;
-        case COLEMAK:
-            if (record->event.pressed) {
-            set_single_persistent_default_layer(_COLEMAK);
-            }
-            return false;
-            break;
-        case DVORAK:
-            if (record->event.pressed) {
-                set_single_persistent_default_layer(_DVORAK);
-            }
-            return false;
             break;
         case PLOVER:
             if (record->event.pressed) {
@@ -92,6 +105,42 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 keymap_config.raw = eeconfig_read_keymap();
                 keymap_config.nkro = 1;
                 eeconfig_update_keymap(keymap_config.raw);
+            }
+            return false;
+            break;
+        case LOWER:
+            if (record->event.pressed) {
+                layer_on(_LOWER);
+                update_tri_layer(_LOWER, _RAISE, _ADJUST);
+            } else {
+                layer_off(_LOWER);
+                update_tri_layer(_LOWER, _RAISE, _ADJUST);
+            }
+            return false;
+            break;
+        case RAISE:
+            if (record->event.pressed) {
+                layer_on(_RAISE);
+                update_tri_layer(_LOWER, _RAISE, _ADJUST);
+            } else {
+                layer_off(_RAISE);
+                update_tri_layer(_LOWER, _RAISE, _ADJUST);
+            }
+            return false;
+            break;
+        case FUNC:
+            if (record->event.pressed) {
+                layer_on(_FUNC);
+            } else {
+                layer_off(_FUNC);
+            }
+            return false;
+            break;
+        case NAV:
+            if (record->event.pressed) {
+                layer_on(_NAV);
+            } else {
+                layer_off(_NAV);
             }
             return false;
             break;
@@ -122,6 +171,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     tap_code(KC_V);
                     unregister_code(KC_LCTL);
                 }
+            }
+            break;
+        case PING:
+            if(record->event.pressed) {
+                SEND_STRING(SS_LGUI("r"));
+                wait_ms(500);
+                send_string_with_delay_P(PSTR("ping -t "), TAP_CODE_DELAY);
+                wait_ms(500);
+                SEND_STRING(SS_LCTRL("v"));
+                wait_ms(500);
+                SEND_STRING(SS_TAP(X_ENTER));
             }
         }
     return process_record_keymap(keycode, record);

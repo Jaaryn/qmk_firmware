@@ -5,11 +5,6 @@
 #include "jaaryn.h"
 
 
-#define KC_RST   RESET
-#define KC_RGB   RGB_MOD
-#define KC_TRGB  RGB_TOG
-
-
 /*
   [_TEMPLATE] = LAYOUT_ergodox_pretty(
      _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______,\
@@ -82,7 +77,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_ADJUST] = LAYOUT_ergodox_pretty(
     _______,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,       KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,  KC_F12, _______,\
     _______,   RESET,   DEBUG, _______, _______, _______, _______,     _______, _______, _______, _______, _______, _______, _______,\
-    _______, KC_TRGB,  KC_RGB, _______, _______, _______,                       _______,  QWERTY, _______,  DVORAK, _______, _______,\
+    _______, RGB_TOG, RGB_MOD, _______, _______, _______,                       _______,  QWERTY, _______,  DVORAK, _______, _______,\
     _______, _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______, _______, _______,\
     _______, _______, _______, _______, _______,                                         _______, _______, _______, _______, _______,\
                                                  _______, _______,     _______, _______,                                             \
@@ -97,7 +92,7 @@ bool process_record_keymap(uint16_t keycode, keyrecord_t *record) {
 }
 
 // Runs just one time when the keyboard initializes.
-void matrix_init_user(void) {
+void matrix_init_keymap(void) {
 #ifdef RGBLIGHT_COLOR_LAYER_0
   rgblight_setrgb(RGBLIGHT_COLOR_LAYER_0);
 #endif
