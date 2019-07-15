@@ -55,18 +55,16 @@ enum userspace_custom_keycodes {
     NEW_SAFE_RANGE  //use "NEWPLACEHOLDER for keymap specific codes
 };
 
-bool process_record_keymap(uint16_t keycode, keyrecord_t *record);
-
 // Define short macros
-#define UNDO    LCTL(KC_Z)
-#define REDO    LCTL(KC_Y)
-#define COPY    LCTL(KC_C)
-#define CUT     LCTL(KC_X)
-#define PASTE   LCTL(KC_V)
-#define WIN_LFT RCTL(RGUI(KC_LEFT))
-#define WIN_RHT RCTL(RGUI(KC_RGHT))
-#define WIN_CLS RCTL(RGUI(KC_F4))
-#define WIN_NEW RCTL(RGUI(KC_D))
+#define UNDO     LCTL(KC_Z)
+#define REDO     LCTL(KC_Y)
+#define COPY     LCTL(KC_C)
+#define CUT      LCTL(KC_X)
+#define PASTE    LCTL(KC_V)
+#define WIN_LFT  RCTL(RGUI(KC_LEFT))
+#define WIN_RHT  RCTL(RGUI(KC_RGHT))
+#define WIN_CLS  RCTL(RGUI(KC_F4))
+#define WIN_NEW  RCTL(RGUI(KC_D))
 #define KC_CAD   LCA(KC_DEL)
 #define KC_ALTB  LALT(KC_TAB)
 #define KC_CTLES CTL_T(KC_ESC)
@@ -108,5 +106,5 @@ bool process_record_keymap(uint16_t keycode, keyrecord_t *record);
 #define MO_AC_0 KC_NO
 #define MO_AC_1 KC_NO
 #define MO_AC_2 KC_NO
-#endif
+#endif // MOUSEKEY_ENABLE
 

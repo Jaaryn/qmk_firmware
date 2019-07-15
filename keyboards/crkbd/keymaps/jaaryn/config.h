@@ -1,15 +1,11 @@
 #pragma once
 
-#define EE_HANDS
-
 #undef USE_I2C
 #undef SSD1306OLED
 
-#ifdef OLED_DISABLE_TIMEOUT
-#   undef OLED_DISABLE_TIMEOUT
-#endif
-
+#define EE_HANDS
 #define USE_SERIAL_PD2
+#define OLED_FONT_H "keyboards/crkbd/keymaps/jaaryn/glcdfont.c"
 
 #ifdef RGBLIGHT_ENABLE
 #   undef RGBLED_NUM
@@ -21,7 +17,5 @@
 #   define RGBLIGHT_HUE_STEP 8
 #   define RGBLIGHT_SAT_STEP 8
 #   define RGBLIGHT_VAL_STEP 8
-#   define RGBLIGHT_LIMIT_VAL 100
-#endif
-
-#define OLED_FONT_H "keyboards/crkbd/keymaps/jaaryn/glcdfont.c"
+#   define RGBLIGHT_LIMIT_VAL 255
+#endif // RGBLIGHT_ENABLE

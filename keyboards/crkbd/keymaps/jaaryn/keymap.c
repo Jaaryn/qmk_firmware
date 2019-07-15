@@ -1,10 +1,11 @@
 #include QMK_KEYBOARD_H
 #include "jaaryn.h"
 #include "bootloader.h"
+
 #ifdef PROTOCOL_LUFA
-  #include "lufa.h"
-  #include "split_util.h"
-#endif
+#   include "lufa.h"
+#   include "split_util.h"
+#endif // PROTOCOL_LUFA
 
 extern uint8_t is_master;
 
@@ -53,8 +54,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_FUNC] = LAYOUT( \
     _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_CCCV,                      PING,    _______, KC_UP,   _______, _______, _______,\
-    _______, KC_F5,   KC_F6,   KC_F7,   KC_F8,   _______,                      _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,\
-    _______, KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______,                      _______, WIN_LFT, WIN_CLS, WIN_NEW, WIN_RHT, _______,\
+    _______, KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_CLCK,                      _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,\
+    _______, KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_NLCK,                      _______, WIN_LFT, WIN_CLS, WIN_NEW, WIN_RHT, _______,\
                                         _______, _______, _______,    _______, _______, _______ \
   ),
 
@@ -95,7 +96,7 @@ void oled_task_user(void) {
     }
 }
 
-#endif
+#endif // OLED_DRIVER_ENABLE
 
 void suspend_power_down_keymap(void) {
     #ifdef RGBLIGHT_ENABLE
