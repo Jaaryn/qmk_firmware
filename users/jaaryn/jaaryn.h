@@ -19,13 +19,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "quantum.h"
 #include "version.h"
 
-#if defined(KEYMAP_SAFE_RANGE)
-#   define PLACEHOLDER_SAFE_RANGE KEYMAP_SAFE_RANGE
-#else
-#   define PLACEHOLDER_SAFE_RANGE SAFE_RANGE
-#endif
-
-/* Define layer names */
 enum userspace_layers {
     _QWERTY = 0,
     _COLEMAK,
@@ -35,11 +28,12 @@ enum userspace_layers {
     _RAISE,
     _ADJUST,
     _FUNC,
-    _NAV
+    _NAV,
+    NEW_LAYER_RANGE
 };
 
 enum userspace_custom_keycodes {
-    VRSN = PLACEHOLDER_SAFE_RANGE,   // Prints QMK Firmware and board info
+    VRSN = SAFE_RANGE,   // Prints QMK Firmware and board info
     QWERTY,         // Sets default layer to QWERTY
     COLEMAK,        // Sets default layer to COLEMAK
     DVORAK,         // Sets default layer to DVORAK
@@ -52,7 +46,7 @@ enum userspace_custom_keycodes {
     KC_CCCV,        // Hold to copy, tap to paste 
     PING,
     RGB_SLD,
-    NEW_SAFE_RANGE  //use "NEWPLACEHOLDER for keymap specific codes
+    NEW_SAFE_RANGE
 };
 
 // Define short macros

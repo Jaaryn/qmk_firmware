@@ -7,6 +7,12 @@
 #   include "split_util.h"
 #endif // PROTOCOL_LUFA
 
+#ifdef OLED_DRIVER_ENABLE
+#   define OLED_TIMEOUT 60000
+    uint16_t oled_timer;
+#endif // OLED_DRIVER_ENABLE
+
+
 extern uint8_t is_master;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -61,7 +67,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_ADJUST] = LAYOUT( \
     RESET,   _______, _______, _______, _______, VRSN,                         VRSN,    _______, _______, _______, _______, EEP_RST,\
-    RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, _______, _______,                      _______, QWERTY,  COLEMAK, DVORAK,  PLOVER,  _______,\
+    RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, VLK_TOG, _______,                      _______, QWERTY,  COLEMAK, DVORAK,  PLOVER,  _______,\
     RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, _______, _______,                      MG_NKRO, KC_MUTE, KC_VOLD, KC_VOLU, KC_MNXT, _______,\
                                         _______, _______, _______,    _______, _______, _______ \
   )
@@ -84,36 +90,22 @@ void render_logo(void);
 bool process_record_keymap(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
         set_keylog(keycode, record);
+        oled_timer = timer_read();
     }
     return true; 
 };
 
 void oled_task_user(void) {
+    if (is_master && timer_elapsed(oled_timer) > OLED_TIMEOUT) {
+        oled_off();
+        return;
+    }
     if (is_master) {
         render_status();
     } else {
         render_logo();
+        oled_scroll_left();
     }
 }
 
 #endif // OLED_DRIVER_ENABLE
-
-void suspend_power_down_keymap(void) {
-    #ifdef RGBLIGHT_ENABLE
-        rgblight_disable_noeeprom();
-    #endif
-
-    #ifdef OLED_DRIVER_ENABLE
-        oled_off();
-    #endif
-}
-
-void suspend_wakeup_init_keymap(void) {
-    #ifdef RGBLIGHT_ENABLE
-        rgblight_enable_noeeprom();
-    #endif
-
-    #ifdef OLED_DRIVER_ENABLE
-        oled_on();
-    #endif
-}
