@@ -11,18 +11,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_FUNC] = LAYOUT_ortho_5x4( \
-        VRSN,    PING,    KC_DEL,  TO(_NAV),\
+        VRSN,    PING,    KC_DEL,  _______,\
         CUT,     COPY,    PASTE,   _______, \
         _______, _______, _______, _______, \
         _______, _______, _______, _______, \
         _______, _______, _______, _______  \
     ),
 
-    [_NAV] = LAYOUT_ortho_5x4( \
-        _______, _______, _______, TO(_FUNC),\
-        MO_S_N,  MO_N,    MO_S_S,  _______, \
-        MO_E,    MO_S,    MO_W,    MO_AC_2, \
-        _______, _______, _______, MO_AC_1, \
-        MO_CL_L, MO_CL_M, MO_CL_R, MO_AC_0  \
-    ),
 };
