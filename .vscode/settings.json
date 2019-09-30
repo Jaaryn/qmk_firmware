@@ -8,6 +8,7 @@
         "**/*.hex": true
     },
     "files.associations": {
+<<<<<<< HEAD
         "*.h": "c",
         "*.c": "c",
         "*.cpp": "cpp",
@@ -16,4 +17,14 @@
     },
     "C_Cpp.dimInactiveRegions": false,
     "C_Cpp.errorSquiggles": "Disabled"
+=======
+      "*.h": "c",
+      "*.c": "c",
+      "*.cpp": "cpp",
+      "*.hpp": "cpp",
+      "xstddef": "c",
+      "type_traits": "c",
+      "utility": "c"
+    }
+>>>>>>> master
 }
