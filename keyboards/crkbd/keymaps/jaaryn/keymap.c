@@ -8,6 +8,7 @@
 #endif // PROTOCOL_LUFA
 
 #ifdef OLED_DRIVER_ENABLE
+#   undef  OLED_TIMEOUT
 #   define OLED_TIMEOUT 60000
     uint16_t oled_timer;
 #endif // OLED_DRIVER_ENABLE
