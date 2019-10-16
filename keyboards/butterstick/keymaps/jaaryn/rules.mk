@@ -18,6 +18,5 @@ COMMAND_ENABLE 		= no		# Commands for debug and configuration
 NKRO_ENABLE 		= yes       # USB Nkey Rollover
 STENO_ENABLE		= yes 		# Needed for chording
 
-OPT_DEFS += -DONLYQWERTY -DDEBUG_MATRIX
 SRC += sten.c
 EXTRAFLAGS += -flto

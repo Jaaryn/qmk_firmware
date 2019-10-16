@@ -1,67 +1,28 @@
 #include QMK_KEYBOARD_H
 
 #include "sten.h"
-/* 	 	
- *  Key names are inherited from steno machines
- *  .-----------------------------------------------------.
- *	| LSU | LFT | LP | LH | ST1 | RF | RP | RL | RT | RD  |
- *  |-----------------------------------------------------|
- *	| LSD | LK  | LW | LR | ST2 | RR | RB | RG | RS | RZ  |
- *  '-----------------------------------------------------'
- */
+#include "config.h"
 
-// Function prefixes
-#define MEDIA 	(LSD | LK  | LW | LR)	
-#define FUNCT 	(LSD | LK  | LP | LH)	
-#define MOVE	(LSU | LFT | LP | LH)	
-#define SYMB	(RD  | RZ)	
-#define NUMA    (LW  | LR)	
-#define NUMB    (RR  | RB)	
-
-// QMK Layer Numbers
- #define BASE 0
- #define GAME 1
-
-// Do not change QMK Layer 0! This is your main keyboard.
-// Make your QMK modifications to the later layers, to add 
-// keys/customize on the first layer modify processQwerty():
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [BASE] = LAYOUT_butter(
+  [0] = LAYOUT_butter(
   	STN_S1,  STN_TL,  STN_PL,  STN_HL,  STN_ST1, STN_FR,  STN_PR,  STN_LR,  STN_TR,  STN_DR,
    	STN_S2,  STN_KL,  STN_WL,  STN_RL,  STN_ST2, STN_RR,  STN_BR,  STN_GR,  STN_SR,  STN_ZR
-  ),
-  // I don't game don't roast me thanks
-  [GAME] = LAYOUT_butter(
-  	KC_Q,  KC_W,  KC_E,  KC_R,  KC_T, KC_Y, KC_U, KC_I,  KC_O, KC_ENT,
-  	KC_A,  KC_S,  KC_D,  KC_F,  KC_G, KC_H, KC_J, KC_K,  KC_L, TO(BASE)
   )
 };
 
-// Note: You can only use basic keycodes here!
-// P() is just a wrapper to make your life easier, any C code can be executed.
-// Only the longest matched chord is run!
-//
-// http://docs.gboards.ca
 uint32_t processQwerty(bool lookup) {
-    // SECRET AGENT CHORDS
-    P( LSU | LK | RS | RD,    	SEND_STRING(VERSION); SEND_STRING(__DATE__));
-		P( LSU | RD, 		            SEND(KC_BSPC));
-    P( LSD | RZ,   			 	      SEND(KC_SPC));
+		P( LSU | RD, 		          SEND(KC_BSPC));
+    P( LSD | RZ,   			 	    SEND(KC_SPC));
 
-    // Dual chords
-    P( LP  | LH,    			    CLICK_MOUSE(KC_MS_BTN2));
-    P( ST1 | RF,    			    CLICK_MOUSE(KC_MS_BTN1));
     P( LSU | LFT,             SEND(KC_ESC));
 		P( LSD | LK,					    SEND(KC_LSFT));
-		P( RZ  | RS,					    SEND(KC_LSFT));
-		P( ST2 | RR,					    SEND(KC_SPC));
+		P( RZ  | RS,					    SEND(KC_RSFT));
     P( RP  | RL,    			    SEND(KC_LGUI));
     P( RT  | RD,    			    SEND(KC_LCTL));
     P( RL  | RT,    			    SEND(KC_LALT));
 		P( LSU | LSD | LFT | LK,	SEND(KC_LCTL));
 		P( RS  | RT  | RD  | RZ,	SEND(KC_ENT));
 
-    // Function Layer
     P( FUNCT | RF,         SEND(KC_F1));
     P( FUNCT | RP,         SEND(KC_F2));
     P( FUNCT | RL,         SEND(KC_F3));
@@ -75,7 +36,6 @@ uint32_t processQwerty(bool lookup) {
     P( FUNCT | RG,         SEND(KC_F11));
     P( FUNCT | RS,         SEND(KC_F12));
 
-    // Movement Layer
     P( MOVE | RF,     SEND(KC_LEFT));
     P( MOVE | RP,     SEND(KC_DOWN));
     P( MOVE | RL,     SEND(KC_UP));
@@ -83,16 +43,6 @@ uint32_t processQwerty(bool lookup) {
     P( MOVE | ST1,    SEND(KC_PGUP));
     P( MOVE | ST2,    SEND(KC_PGDN));
 
-    // Media Layer
-    P( MEDIA | RF,    SEND(KC_MPRV));
-    P( MEDIA | RP,    SEND(KC_MPLY));
-    P( MEDIA | RL,    SEND(KC_MPLY));
-    P( MEDIA | RT,    SEND(KC_MNXT));
-    P( MEDIA | RG,	  SEND(KC_VOLU));
-    P( MEDIA | RB,    SEND(KC_VOLD));
-    P( MEDIA | RS,    SEND(KC_MUTE));
-
-    // Number Row, Right
     P( NUMB | LSU,    SEND(KC_1));
     P( NUMB | LFT,    SEND(KC_2));
     P( NUMB | LP,     SEND(KC_3));
@@ -104,7 +54,6 @@ uint32_t processQwerty(bool lookup) {
     P( NUMB | RT,     SEND(KC_9));
     P( NUMB | RD,     SEND(KC_0));
 
-    // Number Row, Left
     P( NUMA | LSU,    SEND(KC_1));
     P( NUMA | LFT,    SEND(KC_2));
     P( NUMA | LP,     SEND(KC_3));
@@ -116,8 +65,6 @@ uint32_t processQwerty(bool lookup) {
     P( NUMA | RT,     SEND(KC_9));
     P( NUMA | RD,     SEND(KC_0));
 
-
-    // Symbols and Numbers
     P( SYMB | LP | LW,      SEND(KC_LSFT); SEND(KC_9));       // (
     P( SYMB | LH | LR,      SEND(KC_LSFT); SEND(KC_0));       // )
     P( SYMB | ST1 | ST2,    SEND(KC_GRV));                    // `
@@ -144,7 +91,6 @@ uint32_t processQwerty(bool lookup) {
     P( SYMB | RT,           SEND(KC_PAST));
     P( SYMB | RS,           SEND(KC_DOT));
 
-    // Letters
     P( LSU | LSD,    SEND(KC_A));
     P( LFT | LK,     SEND(KC_O));
     P( LP  | LW,     SEND(KC_E));
@@ -179,5 +125,4 @@ uint32_t processQwerty(bool lookup) {
     return 0;
 }
 
-// Don't fuck with this, thanks.
 size_t keymapsCount  = sizeof(keymaps)/sizeof(keymaps[0]);
